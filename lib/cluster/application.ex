@@ -6,7 +6,11 @@ defmodule Cluster.Application do
   use Application
 
   def start(_type, _args) do
+    topologies = Application.get_env(:libcluster, :topologies, [])
+
     children = [
+      # Start the cluster supervisor
+      {Cluster.Supervisor, [topologies, [name: Cluster.ClusterSupervisor]]},
       # Start the Telemetry supervisor
       ClusterWeb.Telemetry,
       # Start the PubSub system

@@ -53,3 +53,21 @@ config :logger, level: :info
 # Finally import the config/prod.secret.exs which loads secrets
 # and configuration from environment variables.
 import_config "prod.secret.exs"
+
+# ExAws
+config :ex_aws,
+  access_key_id: [{:system, "AWS_ACCESS_KEY_ID"}, :instance_role],
+  secret_access_key: [{:system, "AWS_SECRET_ACCESS_KEY"}, :instance_role]
+
+# Libcluster EC2
+config :libcluster,
+  debug: false,
+  topologies: [
+    example: [
+      strategy: ClusterEC2.Strategy.Tags,
+      config: [
+        app_prefix: "cluster",
+        ec2_tagname: "clusterEnv"
+      ],
+    ]
+  ]
